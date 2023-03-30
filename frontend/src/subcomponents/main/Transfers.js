@@ -14,7 +14,9 @@ class TransferPage extends Component {
           <Card.Body>
             <TransferForm/>
             <Button 
-            variant="primary">Transfer 
+              variant="primary"
+              onClick = {this.props.sendTransaction}
+              >Transfer 
             </Button>
           </Card.Body>
         </Card>

@@ -5,9 +5,16 @@ import './App.css';
 import Overview from './subcomponents/main/Overview'
 import TransferPage from './subcomponents/main/Transfers'
 
+const initialTransactionDetails = {
+  txAmount: 0,
+  txToAccount: '',
+  txCurrency: ''
+}
 
 const initialState = {
-  route: 'overview'
+  username: '',
+  route: 'overview',
+  transactionDetails: initialTransactionDetails
 }
 
 class App extends Component {
@@ -23,6 +30,23 @@ class App extends Component {
     })
   }
 
+  sendTransaction = async () => {
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        username: this.state.username,
+        transactionDetails: this.state.transactionDetails
+      })
+    }
+    let response = await (await fetch('http://127.0.0.1:5001/send_transaction', requestOptions)).json()
+    let message = response['message']
+    console.log(message)
+    alert(message)
+  }
+
   render() {
     return (
       <div class = "app">
@@ -34,6 +58,7 @@ class App extends Component {
         :
           <TransferPage
           onRouteChange = {this.onRouteChange}
+          sendTransaction = {this.sendTransaction}
           />
         }
       </div>
