@@ -6,6 +6,12 @@ import Overview from './subcomponents/main/Overview'
 import TransferPage from './subcomponents/main/Transfers'
 import Authentication from './subcomponents/authentication/Authentication'
 
+const initialLoginDetails = {
+  username: '',
+  email: '',
+  password: ''
+}
+
 const initialTxDetails = {
   txToAccount: '',
   txAmount: 0,
@@ -13,8 +19,8 @@ const initialTxDetails = {
 }
 
 const initialState = {
-  username: '',
   route: 'login',
+  loginDetails: initialLoginDetails,
   txDetails: initialTxDetails
 }
 
@@ -43,25 +49,27 @@ class App extends Component {
       })
     }
     let response = await (
-      await fetch('http://127.0.0.1:5001/send_transaction', requestOptions
+      await fetch(
+        'http://127.0.0.1:5001/send_transaction', requestOptions
       )
     ).json()
     let message = response['message']
     alert(message)
   }
 
-  onTxTextChange = (key, value) => {
+  onFormTextChange = (object, key, value) => {
     this.setState({
-      txDetails: {
-        ...this.state.txDetails,
+      [object]: {
+        ...this.state[object],
         [key]: value
       }
     })
+    console.log(this.state)
   }
 
   render() {
     return (
-      <div class = "app">
+      <div className = "app">
         {this.state.route === 'overview' 
         ?
           <Overview
@@ -72,13 +80,14 @@ class App extends Component {
           <TransferPage
           onRouteChange = {this.onRouteChange}
           sendTransaction = {this.sendTransaction}
-          onTxTextChange = {this.onTxTextChange}
+          onFormTextChange = {this.onFormTextChange}
           />
         : this.state.route === 'login' || this.state.route === 'register' 
         ?
           <Authentication
           state = {this.state}
           onRouteChange = {this.onRouteChange}
+          onFormTextChange = {this.onFormTextChange}
           />
         :
           <>

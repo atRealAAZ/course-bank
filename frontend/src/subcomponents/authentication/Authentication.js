@@ -11,10 +11,12 @@ class Authentication extends Component {
       ?
         <LogIn
         onRouteChange = {this.props.onRouteChange}
+        onFormTextChange = {this.props.onFormTextChange}
         />
       :
         <Register
         onRouteChange = {this.props.onRouteChange}
+        onFormTextChange = {this.props.onFormTextChange}
         />
       }
       </>
@@ -31,16 +33,17 @@ class LogIn extends Component {
         <Form.Group className="mb-3">
           <Form.Label>Username</Form.Label>
           <Form.Control type="username"
+          onChange = {(event) => {this.props.onFormTextChange('loginDetails', 'username', event.target.value)}}
           />
         </Form.Group>
         <Form.Group className="mb-3">
           <Form.Label>Password</Form.Label>
           <Form.Control type="password" 
+          onChange = {(event) => {this.props.onFormTextChange('loginDetails', 'password', event.target.value)}}
           />
         </Form.Group>
         <Form.Group>
           <Button 
-          class = "button"
           variant = "primary" 
           >Login
           </Button>
@@ -66,16 +69,19 @@ class Register extends Component {
         <Form.Group className="mb-3">
           <Form.Label>Email</Form.Label>
           <Form.Control type="email"
+          onChange = {(event) => {this.props.onFormTextChange('loginDetails', 'email', event.target.value)}}
           />
         </Form.Group>
         <Form.Group className="mb-3">
           <Form.Label>Username</Form.Label>
           <Form.Control type="username"
+          onChange = {(event) => {this.props.onFormTextChange('loginDetails', 'username', event.target.value)}}
           />
         </Form.Group>
         <Form.Group className="mb-3">
           <Form.Label>Password</Form.Label>
           <Form.Control type="password" 
+          onChange = {(event) => {this.props.onFormTextChange('loginDetails', 'password', event.target.value)}}
           />
         </Form.Group>
         <Form.Group>
