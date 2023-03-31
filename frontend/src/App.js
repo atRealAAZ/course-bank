@@ -4,6 +4,7 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import Overview from './subcomponents/main/Overview'
 import TransferPage from './subcomponents/main/Transfers'
+import Authentication from './subcomponents/authentication/Authentication'
 
 const initialTxDetails = {
   txToAccount: '',
@@ -13,7 +14,7 @@ const initialTxDetails = {
 
 const initialState = {
   username: '',
-  route: 'overview',
+  route: 'login',
   txDetails: initialTxDetails
 }
 
@@ -66,12 +67,22 @@ class App extends Component {
           <Overview
           onRouteChange = {this.onRouteChange}
           />
-        :
+        : this.state.route === 'transfer'
+        ?
           <TransferPage
           onRouteChange = {this.onRouteChange}
           sendTransaction = {this.sendTransaction}
           onTxTextChange = {this.onTxTextChange}
           />
+        : this.state.route === 'login' || this.state.route === 'register' 
+        ?
+          <Authentication
+          state = {this.state}
+          onRouteChange = {this.onRouteChange}
+          />
+        :
+          <>
+          </>
         }
       </div>
     )
