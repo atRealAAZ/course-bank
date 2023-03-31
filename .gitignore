@@ -8,7 +8,7 @@
 /backend/migrations
 /backend/app.db
 /backend/bank/__pycache__
-/bankend/bank/main/__pycache__
+/bankend/bank/main/__pycache__/
 
 ###FRONTEND
 

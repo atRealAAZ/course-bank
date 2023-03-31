@@ -12,7 +12,9 @@ class TransferPage extends Component {
         />
         <Card>
           <Card.Body>
-            <TransferForm/>
+            <TransferForm
+            onTxTextChange = {this.props.onTxTextChange}
+            />
             <Button 
               variant="primary"
               onClick = {this.props.sendTransaction}
@@ -33,15 +35,21 @@ class TransferForm extends Component {
         <Card.Body>
           <Form.Group className="mb-3">
             <Form.Label>To Account</Form.Label>
-            <Form.Control/>
+            <Form.Control 
+            onChange = {(event) => {this.props.onTxTextChange('txToAccount', event.target.value)}}
+            />
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label>Amount</Form.Label>
-            <Form.Control/>
+            <Form.Control 
+            onChange = {(event) => {this.props.onTxTextChange('txAmount', event.target.value)}}
+            />
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label>Currency</Form.Label>
-            <Form.Control/>
+            <Form.Control 
+            onChange = {(event) => {this.props.onTxTextChange('txCurrency', event.target.value)}}
+            />
           </Form.Group>  
           </Card.Body>
         </Card>

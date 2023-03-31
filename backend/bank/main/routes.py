@@ -10,7 +10,7 @@ def validate_transaction(
     username, 
     transaction_details
 ):
-    amount, to_account, currency = transaction_details.values()
+    to_account, amount, currency = transaction_details.values()
     try:
         amount = int(amount)
     except:
@@ -62,7 +62,7 @@ def send_transaction():
     message = request.get_json()
     print(message)
     username = message['username']
-    transaction_details = message['transactionDetails']
+    transaction_details = message['txDetails']
     validated, validation_msg = validate_transaction(
         username, transaction_details
     )
