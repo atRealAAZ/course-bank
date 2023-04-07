@@ -12,3 +12,4 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 from bank.main import routes, models
+from bank.authentication import routes, models

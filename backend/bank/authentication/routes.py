@@ -31,21 +31,21 @@ def add_user_to_db(username, email, password):
 
 @app.route('/register', methods = ['GET', 'POST'])
 def register():
-    message = request.get_json()
-    print(message)
+    message = request.get_json()['loginDetails']
     email, username, password = message.values()
-    user_exists = db_query(User, 'username', username)[0]
     email_exists = db_query(User, 'email', email)[0]
-    if user_exists:
-        return gen_result_dict(
-            success = False, 
-            message = 'Username already exists, choose another username.'
-        )
+    user_exists = db_query(User, 'username', username)[0]
     if email_exists:
         return gen_result_dict(
             success = False, 
             message = 'Email address already taken.'
         )
+    if user_exists:
+        return gen_result_dict(
+            success = False, 
+            message = 'Username already exists, choose another username.'
+        )
+   
     else:
         new_user = add_user_to_db(
             username, email, password
@@ -53,25 +53,28 @@ def register():
         return gen_result_dict(
             success = True, 
             message = 'Account created successfully! Welcome {}!'.format(username),
-            account_details = gen_result_dict(
-                username = username,
-                accountNumber = new_user.account_number,
-                balance = new_user.balance,
-            ),
-            tx_details = gen_result_dict(
-                tx_exists = False, 
-                transactions = []
+            result = gen_result_dict(
+                account_details = gen_result_dict(
+                    username = username,
+                    accountNumber = new_user.account_number,
+                    balance = new_user.balance,
+                ),
+                tx_details = gen_result_dict(
+                    tx_exists = False, 
+                    transactions = []
+                )
             )
         )
     
 @app.route('/login', methods = ['GET', 'POST'])
 def login():
-    message = request.get_json()
+    message = request.get_json()['loginDetails']
     _, username, password = message.values()
     exists, user = db_query(User, 'username', username)
     if exists:
         if user.check_password(password):
             result = get_overview(user)
+            print(result)
             return gen_result_dict(
                 success = True, 
                 message = 'Login successful!',

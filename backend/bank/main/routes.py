@@ -6,35 +6,38 @@ from bank.utils import *
 from flask import request
 from datetime import datetime
 
-# def fetch_transactions(account_number):
-#     tx_query = Transaction.query.filter_by(
-#         to_account = account_number
-#     ).union(
-#         Transaction.query.filter_by(
-#         from_account = account_number
-#         )
-#     ).order_by(
-#         Transaction.id.desc()
-#     )
-#     paginated_tx = get_paginated_object(tx_query)
-#     if len(tx_query.all()) == 0:
-#         return False, []
-#     else:
-#         return True, paginated_tx
+def fetch_transactions(account_number):
+    tx_query = Transaction.query.filter_by(
+        to_account = account_number
+    ).union(
+        Transaction.query.filter_by(
+        from_account = account_number
+        )
+    ).order_by(
+        Transaction.id.desc()
+    )
+    txs = tx_query.all()
+    # paginated_tx = get_paginated_object(tx_query)
+    if len(txs) == 0:
+        return False, []
+    else:
+        return True, txs
 
 def get_overview(user):
-    # tx_exists, transactions = fetch_transactions(user.account_number)
+    tx_exists, txs = fetch_transactions(
+        user.account_number
+    )
     return gen_result_dict(
         account_details = gen_result_dict(
             username = user.username,
             accountNumber = user.account_number,
             balance = user.balance,
+        ),
+        tx_table = gen_result_dict(
+            tx_exists = tx_exists, 
+            txs = txs
+            # page = 0
         )
-        # tx_details = gen_result_dict(
-        #     tx_exists = tx_exists, 
-        #     transactions = transactions,
-        #     page = 0
-        # )
     )
 
 def validate_transaction(
@@ -65,10 +68,10 @@ def add_tx_to_db(
     username, 
     transaction_details, 
 ):
-    amount, to_account, currency = transaction_details.values()
+    to_account, amount, currency = transaction_details.values()
     amount = int(amount)
-    user_sender = db_query(User, 'username', username)
-    user_receiver = db_query(User, 'account_number', to_account)
+    user_sender = db_query(User, 'username', username)[1]
+    user_receiver = db_query(User, 'account_number', to_account)[1]
     today = datetime.strftime(datetime.today(), "%d-%m-%Y")
     tx = Transaction(
         from_account = user_sender.account_number,

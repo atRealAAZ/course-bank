@@ -15,3 +15,18 @@ def db_query(
         return False, query
     else: 
         return True, query
+    
+def get_dict_from_object(
+    sqlalchemy_obj, 
+    to_exclude = '_sa_instance_state'
+):
+    db_dict = sqlalchemy_obj.__dict__
+    new_dict = {
+        key: db_dict[key]
+        for key in db_dict.keys()
+        if key not in to_exclude
+    }
+    return new_dict
+
+def get_dicts(query):
+    return [get_dict_from_object(obj) for obj in query]

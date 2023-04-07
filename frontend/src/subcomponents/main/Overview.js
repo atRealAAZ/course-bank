@@ -12,7 +12,9 @@ class Overview extends Component {
         />
         <Card>
           <Card.Body>  
-            <AccountInformation/>
+            <AccountInformation
+            state = {this.props.state}
+            />
           </Card.Body>
           <Card.Body>
             <Button 
@@ -29,6 +31,7 @@ class Overview extends Component {
 
 class AccountInformation extends Component {
   render () {
+    let acctInfo = this.props.state.acctDetails
     return (
       <Table striped bordered hover>
         <thead>
@@ -40,9 +43,9 @@ class AccountInformation extends Component {
         </thead>
         <tbody>
           <tr>
-            <td>Mr. My Name</td>
-            <td>0123456789</td>
-            <td>100</td>
+            <td>{acctInfo.username}</td>
+            <td>{acctInfo.accountNumber}</td>
+            <td>{acctInfo.balance}</td>
           </tr>
         </tbody>
       </Table>

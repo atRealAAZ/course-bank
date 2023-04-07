@@ -18,11 +18,25 @@ const initialTxDetails = {
   txCurrency: ''
 }
 
+const initialAcctDetails = {
+  username: '',
+  accountNumber: '',
+  balance: 0
+}
+
+const initialTxTable = {
+  exists: false,
+  tx: []
+}
+
 const initialState = {
   route: 'login',
   loginDetails: initialLoginDetails,
-  txDetails: initialTxDetails
+  txDetails: initialTxDetails,
+  acctDetails: initialAcctDetails,
+  txTable: initialTxTable
 }
+
 
 class App extends Component {
 
@@ -64,7 +78,6 @@ class App extends Component {
         [key]: value
       }
     })
-    console.log(this.state)
   }
 
   onAuthentication = async (route) => {
@@ -83,16 +96,15 @@ class App extends Component {
         'http://127.0.0.1:5001/' + route, requestOptions
       )
     ).json()
-    console.log(86, response)
     let success = response['success']
     let message = response['message']
     let result = response['result']
-    console.log(result)
     if (success) {
       this.setState({
         ...this.state,
         route: 'overview',
-        // accountDetails: result['account_details']
+        acctDetails: result['account_details'],
+        txTable: result['tx_table']
       })
     }
     alert(message)
@@ -104,6 +116,7 @@ class App extends Component {
         {this.state.route === 'overview' 
         ?
           <Overview
+          state = {this.state}
           onRouteChange = {this.onRouteChange}
           />
         : this.state.route === 'transfer'

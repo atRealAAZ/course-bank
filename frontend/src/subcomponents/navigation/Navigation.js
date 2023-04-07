@@ -13,6 +13,11 @@ class Navigation extends Component {
             onClick = {() => {this.props.onRouteChange('overview')}}
             >Overview
           </Button>
+          <Button 
+            variant = "primary"
+            onClick = {() => {this.props.onRouteChange('login')}}
+            >Sign Out
+          </Button>
         </Navbar>
       </>
     )

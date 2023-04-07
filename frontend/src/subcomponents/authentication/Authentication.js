@@ -30,7 +30,9 @@ class LogIn extends Component {
   render() {
     return (
       <>
-      <Card>
+      <Card
+      className = "auth"
+      >
       <Card.Body>
         <Form.Group className="mb-3">
           <Form.Label>Username</Form.Label>
@@ -79,7 +81,9 @@ class Register extends Component {
     render() {
       return (
       <>
-      <Card>
+      <Card
+      className = "auth"
+      >
       <Card.Body>
         <Form.Group className="mb-3">
           <Form.Label>Email</Form.Label>
