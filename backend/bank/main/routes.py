@@ -6,6 +6,37 @@ from bank.utils import *
 from flask import request
 from datetime import datetime
 
+# def fetch_transactions(account_number):
+#     tx_query = Transaction.query.filter_by(
+#         to_account = account_number
+#     ).union(
+#         Transaction.query.filter_by(
+#         from_account = account_number
+#         )
+#     ).order_by(
+#         Transaction.id.desc()
+#     )
+#     paginated_tx = get_paginated_object(tx_query)
+#     if len(tx_query.all()) == 0:
+#         return False, []
+#     else:
+#         return True, paginated_tx
+
+def get_overview(user):
+    # tx_exists, transactions = fetch_transactions(user.account_number)
+    return gen_result_dict(
+        account_details = gen_result_dict(
+            username = user.username,
+            accountNumber = user.account_number,
+            balance = user.balance,
+        )
+        # tx_details = gen_result_dict(
+        #     tx_exists = tx_exists, 
+        #     transactions = transactions,
+        #     page = 0
+        # )
+    )
+
 def validate_transaction(
     username, 
     transaction_details
@@ -15,8 +46,8 @@ def validate_transaction(
         amount = int(amount)
     except:
         return False, "Invalid amount."
-    user = User.query.filter_by(username = username).first()
-    to_account_query = User.query.filter_by(account_number = to_account).first()
+    user = db_query(User, 'username', username)[1]
+    to_account_query = db_query(User, 'account_number', to_account)[1]
     if to_account_query == None:
         return False, "Account does not exist!"
     if to_account == user.account_number:
@@ -36,8 +67,8 @@ def add_tx_to_db(
 ):
     amount, to_account, currency = transaction_details.values()
     amount = int(amount)
-    user_sender = User.query.filter_by(username = username).first()
-    user_receiver = User.query.filter_by(account_number = to_account).first()
+    user_sender = db_query(User, 'username', username)
+    user_receiver = db_query(User, 'account_number', to_account)
     today = datetime.strftime(datetime.today(), "%d-%m-%Y")
     tx = Transaction(
         from_account = user_sender.account_number,
@@ -60,9 +91,7 @@ def add_tx_to_db(
 @app.route('/send_transaction', methods = ['GET', 'POST'])
 def send_transaction():
     message = request.get_json()
-    print(message)
-    username = message['username']
-    transaction_details = message['txDetails']
+    username, transaction_details = message.values()
     validated, validation_msg = validate_transaction(
         username, transaction_details
     )
@@ -74,5 +103,4 @@ def send_transaction():
         result = validated,
         message = validation_msg
     )
-    print(validation_msg)
     return result

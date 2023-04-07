@@ -7,8 +7,8 @@ import TransferPage from './subcomponents/main/Transfers'
 import Authentication from './subcomponents/authentication/Authentication'
 
 const initialLoginDetails = {
-  username: '',
   email: '',
+  username: '',
   password: ''
 }
 
@@ -44,7 +44,7 @@ class App extends Component {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        username: this.state.username,
+        username: this.state.loginDetails.username,
         txDetails: this.state.txDetails
       })
     }
@@ -65,6 +65,37 @@ class App extends Component {
       }
     })
     console.log(this.state)
+  }
+
+  onAuthentication = async (route) => {
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        loginDetails: this.state.loginDetails
+      })
+    }
+    console.log(requestOptions.body)
+    let response = await (
+      await fetch(
+        'http://127.0.0.1:5001/' + route, requestOptions
+      )
+    ).json()
+    console.log(86, response)
+    let success = response['success']
+    let message = response['message']
+    let result = response['result']
+    console.log(result)
+    if (success) {
+      this.setState({
+        ...this.state,
+        route: 'overview',
+        // accountDetails: result['account_details']
+      })
+    }
+    alert(message)
   }
 
   render() {
@@ -88,6 +119,7 @@ class App extends Component {
           state = {this.state}
           onRouteChange = {this.onRouteChange}
           onFormTextChange = {this.onFormTextChange}
+          onAuthentication = {this.onAuthentication}
           />
         :
           <>
