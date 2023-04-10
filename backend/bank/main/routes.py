@@ -2,14 +2,42 @@ from bank import app
 from bank.main.models import *
 from bank.authentication.models import User
 from bank.utils import *
+from config import Config
 
 from flask import request
 from datetime import datetime
 
+def gen_pagination_dict(
+    has_prev,
+    items,
+    has_next
+):
+    return {
+        'has_prev': has_prev,
+        'items': items,
+        'has_next': has_next
+    } 
+
+def get_paginated_object(sqlalchemy_obj):
+    paginates = []
+    num_pages = sqlalchemy_obj.paginate(
+        page = 1, 
+        per_page = Config.TX_PER_PAGE
+    ).pages
+    for page_num in range(1, num_pages + 1):
+        page = sqlalchemy_obj.paginate(
+            page = page_num, 
+            per_page = Config.TX_PER_PAGE
+        )
+        paginate = gen_pagination_dict(
+            page.has_prev,
+            [get_dict_from_object(tx) for tx in page.items], 
+            page.has_next
+        )
+        paginates.append(paginate)
+    return paginates
+
 def fetch_transactions(account_number):
-    tx_query = db_query(
-        Transaction, 'to_account', account_number
-    )
     tx_query = Transaction.query.filter_by(
         to_account = account_number
     ).union(
@@ -20,12 +48,12 @@ def fetch_transactions(account_number):
         Transaction.id.desc()
     )
     txs_raw = tx_query.all()
-    # paginated_tx = get_paginated_object(tx_query)
     if len(txs_raw) == 0:
         return False, []
     else:
-        txs = get_dicts(txs_raw)
-        return True, txs
+        paginated_txs = get_paginated_object(tx_query)
+        print(paginated_txs)
+        return True, paginated_txs
 
 def get_overview(user):
     tx_exists, txs = fetch_transactions(
@@ -39,8 +67,8 @@ def get_overview(user):
         ),
         tx_table = gen_result_dict(
             tx_exists = tx_exists, 
-            txs = txs
-            # page = 0
+            txs = txs,
+            page = 0
         )
     )
 

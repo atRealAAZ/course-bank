@@ -12,3 +12,4 @@ class Config(object):
         'active': True,
         'amount': 20
     }
+    TX_PER_PAGE = 10

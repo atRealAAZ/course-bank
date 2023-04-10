@@ -26,7 +26,7 @@ const initialAcctDetails = {
 
 const initialTxTable = {
   exists: false,
-  tx: []
+  txs: []
 }
 
 const initialState = {
@@ -40,7 +40,7 @@ const initialState = {
 
 class App extends Component {
 
-  constructor(props) {
+  constructor() {
     super()
     this.state = initialState
   }
@@ -111,6 +111,25 @@ class App extends Component {
     }
   }
 
+  onNavigatePagination = (value) => {
+    let page = this.state.txTable.page
+    if (value === 'Next') {
+      this.setState({
+        txTable: {
+          ...this.state.txTable,
+          page: page + 1
+        }
+      })
+    } else {
+      this.setState({
+        txTable: {
+          ...this.state.txTable,
+          page: page - 1
+        }
+      })
+    } 
+  }
+
   render() {
     return (
       <div className = "app">
@@ -119,6 +138,7 @@ class App extends Component {
           <Overview
           state = {this.state}
           onRouteChange = {this.onRouteChange}
+          onNavigatePagination = {this.onNavigatePagination}
           />
         : this.state.route === 'transfer'
         ?

@@ -23,6 +23,7 @@ class Overview extends Component {
             </Button>
             <TransactionTable
             state = {this.props.state}
+            onNavigatePagination = {this.props.onNavigatePagination}
             />
           </Card.Body>
         </Card>
@@ -74,7 +75,7 @@ class TransactionTable extends Component {
           <tbody>
           {txTable.tx_exists
           ?
-            txTable.txs.map((tx) => (
+            txTable.txs[txTable.page].items.map((tx) => (
               <tr>
                 <td>{tx.id}</td>
                 <td>{tx.to_account}</td>
@@ -89,10 +90,50 @@ class TransactionTable extends Component {
             <p>No transactions found!</p>
           }     
          </tbody>
-      </Table>
+        </Table>
+        {txTable['tx_exists']
+        ?
+          <Pagination
+          txTable = {txTable}
+          onNavigatePagination = {this.props.onNavigatePagination}
+          />
+        :
+          <>
+          </>
+        }
       </>
     )
   }
 } 
+
+class Pagination extends Component {
+  render () {
+    let txTable = this.props.txTable
+    return (
+    <>
+      {txTable.txs[txTable.page]['has_prev']
+      ?
+        <Button 
+        variant="primary"
+        onClick = {() => this.props.onNavigatePagination('Previous')}
+        >Previous
+        </Button>
+      : 
+        null
+      }
+      {txTable.txs[txTable.page]['has_next']
+      ?
+        <Button 
+        variant="primary"
+        onClick = {() => this.props.onNavigatePagination('Next')}
+        >Next
+        </Button>
+      :
+       null
+      }
+    </>
+    )
+  }
+}
 
 export default Overview
