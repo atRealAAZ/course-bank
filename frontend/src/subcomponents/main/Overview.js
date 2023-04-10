@@ -21,7 +21,9 @@ class Overview extends Component {
               variant="primary"
               onClick = {() => {this.props.onRouteChange('transfer')}}>Transfer 
             </Button>
-            <TransactionTable/>
+            <TransactionTable
+            state = {this.props.state}
+            />
           </Card.Body>
         </Card>
       </>
@@ -55,6 +57,7 @@ class AccountInformation extends Component {
 
 class TransactionTable extends Component {
   render () {
+    let txTable = this.props.state.txTable
     return (
       <>
         <Table striped bordered hover>
@@ -65,20 +68,26 @@ class TransactionTable extends Component {
               <th>To Account</th>
               <th>Amount</th>
               <th>Currency</th>
-              <th>Category</th>
               <th>Date</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td>123456789</td>
-              <td>987654321</td>
-              <td>10</td>
-              <td>EUR</td>
-              <td>Pleasure</td>
-              <td>18-01-2023</td>
-           </tr>
+          {txTable.tx_exists
+          ?
+            txTable.txs.map((tx) => (
+              <tr>
+                <td>{tx.id}</td>
+                <td>{tx.to_account}</td>
+                <td>{tx.from_account}</td>
+                <td>{tx.amount}</td>
+                <td>{tx.currency}</td>
+                <td>{tx.date}</td>
+              </tr>  
+              )
+            )
+          :
+            <p>No transactions found!</p>
+          }     
          </tbody>
       </Table>
       </>

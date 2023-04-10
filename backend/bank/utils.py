@@ -29,4 +29,6 @@ def get_dict_from_object(
     return new_dict
 
 def get_dicts(query):
-    return [get_dict_from_object(obj) for obj in query]
+    return [
+        get_dict_from_object(obj) for obj in query
+    ]

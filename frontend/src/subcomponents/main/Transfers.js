@@ -9,6 +9,7 @@ class TransferPage extends Component {
       <>
         <Navigation
         onRouteChange = {this.props.onRouteChange}
+        onAuthentication = {this.props.onAuthentication}
         />
         <Card>
           <Card.Body>

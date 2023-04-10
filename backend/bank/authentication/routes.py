@@ -53,17 +53,7 @@ def register():
         return gen_result_dict(
             success = True, 
             message = 'Account created successfully! Welcome {}!'.format(username),
-            result = gen_result_dict(
-                account_details = gen_result_dict(
-                    username = username,
-                    accountNumber = new_user.account_number,
-                    balance = new_user.balance,
-                ),
-                tx_details = gen_result_dict(
-                    tx_exists = False, 
-                    transactions = []
-                )
-            )
+            result = get_overview(new_user)
         )
     
 @app.route('/login', methods = ['GET', 'POST'])
@@ -74,7 +64,6 @@ def login():
     if exists:
         if user.check_password(password):
             result = get_overview(user)
-            print(result)
             return gen_result_dict(
                 success = True, 
                 message = 'Login successful!',

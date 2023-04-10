@@ -90,7 +90,6 @@ class App extends Component {
         loginDetails: this.state.loginDetails
       })
     }
-    console.log(requestOptions.body)
     let response = await (
       await fetch(
         'http://127.0.0.1:5001/' + route, requestOptions
@@ -107,7 +106,9 @@ class App extends Component {
         txTable: result['tx_table']
       })
     }
-    alert(message)
+    if (route !== 'get_overview_route') {
+      alert(message)
+    }
   }
 
   render() {
@@ -125,6 +126,7 @@ class App extends Component {
           onRouteChange = {this.onRouteChange}
           sendTransaction = {this.sendTransaction}
           onFormTextChange = {this.onFormTextChange}
+          onAuthentication = {this.onAuthentication}
           />
         : this.state.route === 'login' || this.state.route === 'register' 
         ?

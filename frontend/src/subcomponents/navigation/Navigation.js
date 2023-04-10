@@ -10,7 +10,7 @@ class Navigation extends Component {
         <Navbar fixed = "top" className="justify-content-end">
           <Button 
             variant = "primary"
-            onClick = {() => {this.props.onRouteChange('overview')}}
+            onClick = {() => {this.props.onAuthentication('get_overview_route')}}
             >Overview
           </Button>
           <Button 

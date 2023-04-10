@@ -7,6 +7,9 @@ from flask import request
 from datetime import datetime
 
 def fetch_transactions(account_number):
+    tx_query = db_query(
+        Transaction, 'to_account', account_number
+    )
     tx_query = Transaction.query.filter_by(
         to_account = account_number
     ).union(
@@ -16,11 +19,12 @@ def fetch_transactions(account_number):
     ).order_by(
         Transaction.id.desc()
     )
-    txs = tx_query.all()
+    txs_raw = tx_query.all()
     # paginated_tx = get_paginated_object(tx_query)
-    if len(txs) == 0:
+    if len(txs_raw) == 0:
         return False, []
     else:
+        txs = get_dicts(txs_raw)
         return True, txs
 
 def get_overview(user):
@@ -107,3 +111,14 @@ def send_transaction():
         message = validation_msg
     )
     return result
+
+@app.route('/get_overview_route', methods = ['GET', 'POST'])
+def get_overview_route():
+    message = request.get_json()['loginDetails']
+    _, username, _ = message.values()
+    user = db_query(User, 'username', username)[1]
+    result = get_overview(user)
+    return gen_result_dict(
+        success = True, 
+        result = result
+    )
