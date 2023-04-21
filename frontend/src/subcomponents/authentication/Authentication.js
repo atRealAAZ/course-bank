@@ -60,12 +60,12 @@ class LogIn extends Component {
         </Form.Group>
         <Form.Group>
           <Button 
-          variant = "primary"
+          variant = "danger"
           onClick = {() => {this.props.onAuthentication('login')}} 
           >Login
           </Button>
           <Button 
-          variant = "primary" 
+          variant = "danger" 
           onClick = {() => {this.props.onRouteChange('register')}}
           >To Register
           </Button>
@@ -124,12 +124,12 @@ class Register extends Component {
         <Form.Group>
           <Button 
           class = "button"
-          variant = "primary"
+          variant = "danger"
           onClick = {() => {this.props.onRouteChange('login')}} 
           >To Login
           </Button>
           <Button 
-          variant = "primary" 
+          variant = "danger" 
           onClick = {() => {this.props.onAuthentication('register')}} 
           >Register
           </Button>

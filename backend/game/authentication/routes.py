@@ -1,7 +1,7 @@
-from bank import app, db
-from bank.authentication.models import User
-from bank.main.routes import get_overview
-from bank.utils import *
+from game import app, db
+from game.authentication.models import User
+# from game.main.routes import get_overview
+from game.utils import *
 from config import Config
 
 from flask import request
@@ -63,11 +63,11 @@ def login():
     exists, user = db_query(User, 'username', username)
     if exists:
         if user.check_password(password):
-            result = get_overview(user)
+            # result = get_overview(user)
             return gen_result_dict(
                 success = True, 
                 message = 'Login successful!',
-                result = result
+                # result = result
             )
         else:
             return gen_result_dict(

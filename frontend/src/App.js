@@ -12,29 +12,16 @@ const initialLoginDetails = {
   password: ''
 }
 
-const initialTxDetails = {
-  txToAccount: '',
-  txAmount: 0,
-  txCurrency: ''
-}
-
-const initialAcctDetails = {
-  username: '',
-  accountNumber: '',
-  balance: 0
-}
-
-const initialTxTable = {
-  exists: false,
-  txs: []
+const initialGame = {
+  player: {},
+  opponent: {},
+  text: "Hello, and welcome. Start the game below!"
 }
 
 const initialState = {
-  route: 'login',
+  route: 'overview',
   loginDetails: initialLoginDetails,
-  txDetails: initialTxDetails,
-  acctDetails: initialAcctDetails,
-  txTable: initialTxTable
+  game: initialGame
 }
 
 
@@ -51,24 +38,44 @@ class App extends Component {
     })
   }
 
-  sendTransaction = async () => {
+  onStartGame = async () => {
     const requestOptions = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        username: this.state.loginDetails.username,
-        txDetails: this.state.txDetails
+        username: this.state.loginDetails.username
       })
     }
     let response = await (
       await fetch(
-        'http://127.0.0.1:5001/send_transaction', requestOptions
+        'http://127.0.0.1:5001/start_game', requestOptions
       )
     ).json()
-    let message = response['message']
-    alert(message)
+    this.setState({
+      game: response
+    })
+  }
+
+  onContinueGame = async (choice) => {
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        choice: choice
+      })
+    }
+    let response = await (
+      await fetch(
+        'http://127.0.0.1:5001/continue_game', requestOptions
+      )
+    ).json()
+    this.setState({
+      game: response
+    })
   }
 
   onFormTextChange = (object, key, value) => {
@@ -138,7 +145,8 @@ class App extends Component {
           <Overview
           state = {this.state}
           onRouteChange = {this.onRouteChange}
-          onNavigatePagination = {this.onNavigatePagination}
+          onStartGame = {this.onStartGame}
+          onContinueGame = {this.onContinueGame}
           />
         : this.state.route === 'transfer'
         ?

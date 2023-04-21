@@ -11,5 +11,5 @@ cors = CORS(app)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-from bank.main import routes, models
-from bank.authentication import routes, models
+from game.main import routes, models
+from game.authentication import routes, models

@@ -10,130 +10,69 @@ class Overview extends Component {
         <Navigation
         onRouteChange = {this.props.onRouteChange}
         />
-        <Card>
-          <Card.Body>  
-            <AccountInformation
-            state = {this.props.state}
-            />
-          </Card.Body>
-          <Card.Body>
-            <Button 
-              variant="primary"
-              onClick = {() => {this.props.onRouteChange('transfer')}}>Transfer 
-            </Button>
-            <TransactionTable
-            state = {this.props.state}
-            onNavigatePagination = {this.props.onNavigatePagination}
-            />
-          </Card.Body>
-        </Card>
-      </>
-    )
-  }
-}
-
-class AccountInformation extends Component {
-  render () {
-    let acctInfo = this.props.state.acctDetails
-    return (
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Account Number</th>
-            <th>Balance</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>{acctInfo.username}</td>
-            <td>{acctInfo.accountNumber}</td>
-            <td>{acctInfo.balance}</td>
-          </tr>
-        </tbody>
-      </Table>
-    )
-  }
-}
-
-class TransactionTable extends Component {
-  render () {
-    let txTable = this.props.state.txTable
-    return (
-      <>
-        <Table striped bordered hover>
-          <thead>
-            <tr>
-              <th>Transaction ID</th>
-              <th>From Account</th>
-              <th>To Account</th>
-              <th>Amount</th>
-              <th>Currency</th>
-              <th>Date</th>
-            </tr>
-          </thead>
-          <tbody>
-          {txTable.tx_exists
+        {/* <Card> */}
+          {/* <Card.Body>   */}
+          {this.props.state.game.text}
+          
+          {/* </Card.Body> */}
+          {this.props.state.game.state !== 'playing'
           ?
-            txTable.txs[txTable.page].items.map((tx) => (
-              <tr>
-                <td>{tx.id}</td>
-                <td>{tx.to_account}</td>
-                <td>{tx.from_account}</td>
-                <td>{tx.amount}</td>
-                <td>{tx.currency}</td>
-                <td>{tx.date}</td>
-              </tr>  
-              )
-            )
+            <Button 
+              variant="danger"
+              onClick = {this.props.onStartGame} 
+              >Start
+            </Button>
           :
-            <p>No transactions found!</p>
-          }     
-         </tbody>
-        </Table>
-        {txTable['tx_exists']
-        ?
-          <Pagination
-          txTable = {txTable}
-          onNavigatePagination = {this.props.onNavigatePagination}
-          />
-        :
-          <>
-          </>
-        }
+           null
+          }
+          {this.props.state.game.state === 'playing'
+            ?
+            <>
+              <Option
+                option = "Collaborate"
+                onContinueGame = {this.props.onContinueGame}
+              />
+              <Option 
+                option = "Betray"
+                onContinueGame = {this.props.onContinueGame}
+              />
+            </>
+          :
+            null
+          }
+          {/* <Card.Body>
+         
+           <Option/>
+           <Option/>
+           <Option/>
+          
+          </Card.Body> */}
+        {/* </Card> */}
       </>
     )
   }
-} 
+}
 
-class Pagination extends Component {
-  render () {
-    let txTable = this.props.txTable
-    return (
-    <>
-      {txTable.txs[txTable.page]['has_prev']
-      ?
-        <Button 
-        variant="primary"
-        onClick = {() => this.props.onNavigatePagination('Previous')}
-        >Previous
-        </Button>
-      : 
-        null
-      }
-      {txTable.txs[txTable.page]['has_next']
-      ?
-        <Button 
-        variant="primary"
-        onClick = {() => this.props.onNavigatePagination('Next')}
-        >Next
-        </Button>
-      :
-       null
-      }
-    </>
+class Option extends Component {
+  render() {
+    let option = this.props.option
+    return(
+      <Card>
+        Choose {option}
+        <Card.Body>
+        
+          <Button 
+            variant="danger"
+            onClick = {() => {this.props.onContinueGame(option)}}
+            >Choose 
+          </Button>
+        </Card.Body>
+      </Card>
     )
   }
 }
+
+
+
 
 export default Overview

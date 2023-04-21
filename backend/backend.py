@@ -1,4 +1,4 @@
-from bank import app, db
+from game import app, db
 # from bank.main.models import Transaction
 # from bank.authentication.models import User
 

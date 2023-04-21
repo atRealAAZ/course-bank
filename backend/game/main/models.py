@@ -1,4 +1,4 @@
-from bank import db
+from game import db
 
 class Transaction(db.Model):
     id = db.Column(db.Integer, primary_key = True)
