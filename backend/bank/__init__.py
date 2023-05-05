@@ -1,11 +1,15 @@
 from flask import Flask
-from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_cors import CORS
+
+from config import Config
 
 app = Flask(__name__)
 app.config.from_object(Config)
+cors = CORS(app)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 from bank.main import routes, models
+from bank.authentication import routes, models

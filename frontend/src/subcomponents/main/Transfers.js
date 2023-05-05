@@ -9,12 +9,17 @@ class TransferPage extends Component {
       <>
         <Navigation
         onRouteChange = {this.props.onRouteChange}
+        onAuthentication = {this.props.onAuthentication}
         />
         <Card>
           <Card.Body>
-            <TransferForm/>
+            <TransferForm
+            onFormTextChange = {this.props.onFormTextChange}
+            />
             <Button 
-            variant="primary">Transfer 
+              variant="primary"
+              onClick = {this.props.sendTransaction}
+              >Transfer 
             </Button>
           </Card.Body>
         </Card>
@@ -31,15 +36,21 @@ class TransferForm extends Component {
         <Card.Body>
           <Form.Group className="mb-3">
             <Form.Label>To Account</Form.Label>
-            <Form.Control/>
+            <Form.Control 
+            onChange = {(event) => {this.props.onFormTextChange('txDetails', 'txToAccount', event.target.value)}}
+            />
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label>Amount</Form.Label>
-            <Form.Control/>
+            <Form.Control 
+            onChange = {(event) => {this.props.onFormTextChange('txDetails', 'txAmount', event.target.value)}}
+            />
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label>Currency</Form.Label>
-            <Form.Control/>
+            <Form.Control 
+            onChange = {(event) => {this.props.onFormTextChange('txDetails', 'txCurrency', event.target.value)}}
+            />
           </Form.Group>  
           </Card.Body>
         </Card>

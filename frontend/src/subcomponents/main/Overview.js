@@ -12,14 +12,19 @@ class Overview extends Component {
         />
         <Card>
           <Card.Body>  
-            <AccountInformation/>
+            <AccountInformation
+            state = {this.props.state}
+            />
           </Card.Body>
           <Card.Body>
             <Button 
               variant="primary"
               onClick = {() => {this.props.onRouteChange('transfer')}}>Transfer 
             </Button>
-            <TransactionTable/>
+            <TransactionTable
+            state = {this.props.state}
+            onNavigatePagination = {this.props.onNavigatePagination}
+            />
           </Card.Body>
         </Card>
       </>
@@ -29,6 +34,7 @@ class Overview extends Component {
 
 class AccountInformation extends Component {
   render () {
+    let acctInfo = this.props.state.acctDetails
     return (
       <Table striped bordered hover>
         <thead>
@@ -40,9 +46,9 @@ class AccountInformation extends Component {
         </thead>
         <tbody>
           <tr>
-            <td>Mr. My Name</td>
-            <td>0123456789</td>
-            <td>100</td>
+            <td>{acctInfo.username}</td>
+            <td>{acctInfo.accountNumber}</td>
+            <td>{acctInfo.balance}</td>
           </tr>
         </tbody>
       </Table>
@@ -52,6 +58,7 @@ class AccountInformation extends Component {
 
 class TransactionTable extends Component {
   render () {
+    let txTable = this.props.state.txTable
     return (
       <>
         <Table striped bordered hover>
@@ -62,25 +69,71 @@ class TransactionTable extends Component {
               <th>To Account</th>
               <th>Amount</th>
               <th>Currency</th>
-              <th>Category</th>
               <th>Date</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td>123456789</td>
-              <td>987654321</td>
-              <td>10</td>
-              <td>EUR</td>
-              <td>Pleasure</td>
-              <td>18-01-2023</td>
-           </tr>
+          {txTable.tx_exists
+          ?
+            txTable.txs[txTable.page].items.map((tx) => (
+              <tr>
+                <td>{tx.id}</td>
+                <td>{tx.to_account}</td>
+                <td>{tx.from_account}</td>
+                <td>{tx.amount}</td>
+                <td>{tx.currency}</td>
+                <td>{tx.date}</td>
+              </tr>  
+              )
+            )
+          :
+            <p>No transactions found!</p>
+          }     
          </tbody>
-      </Table>
+        </Table>
+        {txTable['tx_exists']
+        ?
+          <Pagination
+          txTable = {txTable}
+          onNavigatePagination = {this.props.onNavigatePagination}
+          />
+        :
+          <>
+          </>
+        }
       </>
     )
   }
 } 
+
+class Pagination extends Component {
+  render () {
+    let txTable = this.props.txTable
+    return (
+    <>
+      {txTable.txs[txTable.page]['has_prev']
+      ?
+        <Button 
+        variant="primary"
+        onClick = {() => this.props.onNavigatePagination('Previous')}
+        >Previous
+        </Button>
+      : 
+        null
+      }
+      {txTable.txs[txTable.page]['has_next']
+      ?
+        <Button 
+        variant="primary"
+        onClick = {() => this.props.onNavigatePagination('Next')}
+        >Next
+        </Button>
+      :
+       null
+      }
+    </>
+    )
+  }
+}
 
 export default Overview
