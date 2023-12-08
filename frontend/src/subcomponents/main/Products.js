@@ -1,5 +1,5 @@
 import {Component} from 'react'
-import {Card, Button} from 'react-bootstrap'
+import {Card, Button, Form} from 'react-bootstrap'
 
 import Navigation from '../navigation/Navigation'
 
@@ -39,10 +39,16 @@ class Mortgage extends Component {
             <Card.Text>
               This is an ordinary amortizing mortgage!
             </Card.Text>
+            <Form.Group controlId="formFile" className="mb-3">
+             <Form.Label>Upload your transactions: </Form.Label>
+              <Form.Control 
+              type="file"
+              onChange = {(event) => {this.props.onFileUpload(event.target.files[0])}} />
+            </Form.Group>
             <Button 
               variant = "primary"
               className = "product-button"
-            >Get it!
+            >Calculate!
             </Button>
           </Card.Body>
         </Card>
@@ -63,9 +69,15 @@ class Loan extends Component {
             <Card.Text>
               This is an ordinary amortizing loan!
             </Card.Text>
+            <Form.Group controlId="formFile" className="mb-3">
+             <Form.Label>Upload:</Form.Label>
+              <Form.Control 
+              type="file"
+              onChange = {(event) => {this.props.onFileUpload(event.target.files[0])}} />
+            </Form.Group>
             <Button 
               variant = "primary"
-            >Get it!
+            >Calculate!
             </Button>
           </Card.Body>
         </Card>
