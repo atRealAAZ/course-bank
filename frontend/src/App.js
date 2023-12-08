@@ -4,6 +4,7 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import Overview from './subcomponents/main/Overview'
 import TransferPage from './subcomponents/main/Transfers'
+import ProductPage from './subcomponents/main/Products'
 import Authentication from './subcomponents/authentication/Authentication'
 
 const initialLoginDetails = {
@@ -147,6 +148,11 @@ class App extends Component {
           sendTransaction = {this.sendTransaction}
           onFormTextChange = {this.onFormTextChange}
           onAuthentication = {this.onAuthentication}
+          />
+        : this.state.route === 'products'
+        ?
+          <ProductPage
+          onRouteChange = {this.onRouteChange}
           />
         : this.state.route === 'login' || this.state.route === 'register' 
         ?
