@@ -39,17 +39,20 @@ class Mortgage extends Component {
             <Card.Text>
               This is an ordinary amortizing mortgage!
             </Card.Text>
+          </Card.Body>
+          <Card.Body className = "product-footer">
+          <Card.Footer className = "product-footer">
             <Form.Group controlId="formFile" className="mb-3">
-             <Form.Label>Upload your transactions: </Form.Label>
+             <Form.Label>Upload transactions:</Form.Label>
               <Form.Control 
               type="file"
               onChange = {(event) => {this.props.onFileUpload(event.target.files[0])}} />
             </Form.Group>
             <Button 
               variant = "primary"
-              className = "product-button"
-            >Calculate!
+            >Calculate offer!
             </Button>
+          </Card.Footer>
           </Card.Body>
         </Card>
       </>
@@ -69,17 +72,19 @@ class Loan extends Component {
             <Card.Text>
               This is an ordinary amortizing loan!
             </Card.Text>
+          </Card.Body>
+          <Card.Footer className = "product-footer">
             <Form.Group controlId="formFile" className="mb-3">
-             <Form.Label>Upload:</Form.Label>
+             <Form.Label>Upload transactions:</Form.Label>
               <Form.Control 
               type="file"
               onChange = {(event) => {this.props.onFileUpload(event.target.files[0])}} />
             </Form.Group>
             <Button 
               variant = "primary"
-            >Calculate!
+            >Calculate offer!
             </Button>
-          </Card.Body>
+          </Card.Footer>
         </Card>
       </>
     )

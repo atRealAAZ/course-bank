@@ -53,3 +53,10 @@
 .product-card {
   margin: 15px;
 }
+
+.product-footer {
+  display: flex;
+  /* align-items: center; */
+  flex-direction: row;
+  justify-content: center;
+}
