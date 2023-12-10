@@ -52,11 +52,12 @@
 
 .product-card {
   margin: 15px;
+  width: 750px;
 }
 
 .product-footer {
   display: flex;
   /* align-items: center; */
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
 }

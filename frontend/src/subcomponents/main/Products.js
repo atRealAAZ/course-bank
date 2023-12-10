@@ -40,9 +40,9 @@ class Mortgage extends Component {
               This is an ordinary amortizing mortgage!
             </Card.Text>
           </Card.Body>
-          <Card.Body className = "product-footer">
+          {/* <Card.Body className = "product-footer"> */}
           <Card.Footer className = "product-footer">
-            <Form.Group controlId="formFile" className="mb-3">
+            <Form.Group controlId="formFile" className="mb-3">  
              <Form.Label>Upload transactions:</Form.Label>
               <Form.Control 
               type="file"
@@ -53,7 +53,7 @@ class Mortgage extends Component {
             >Calculate offer!
             </Button>
           </Card.Footer>
-          </Card.Body>
+          {/* </Card.Body> */}
         </Card>
       </>
     )
