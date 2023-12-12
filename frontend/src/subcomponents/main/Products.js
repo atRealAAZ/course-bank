@@ -11,6 +11,25 @@ class ProductPage extends Component {
           onRouteChange = {this.props.onRouteChange}
           onAuthentication = {this.props.onAuthentication}
         />
+        {this.state.route === 'productsOverview'
+        ?
+          <ProductsOverview
+            onGetProduct = {this.props.onGetProduct}
+          />
+        :
+          <ProductOffer
+           
+          />
+        }
+      </>
+    )
+  }
+}
+
+class ProductsOverview extends Component {
+  render () {
+    return (
+      <>
         <Card>
           <Card.Header>
             <Card.Title>
@@ -18,14 +37,40 @@ class ProductPage extends Component {
             </Card.Title>
           </Card.Header>
           <Card.Body>
-            <Loan/>
-            <Mortgage/>
+            <Loan
+              onGetProduct = {this.props.onGetProduct}
+            />
+            <Mortgage
+              onGetProduct = {this.props.onGetProduct}
+            />
           </Card.Body>
         </Card>
       </>
       )
   }
 }
+
+class ProductOffer extends Component {
+  render () {
+    return (
+      <>
+        <Card>
+          <Card.Header>
+            <Card.Title>
+              Offer
+            </Card.Title>
+          </Card.Header>
+          <Card.Body>
+            <Card.Text>
+              Sorry bruv, no loan.
+            </Card.Text>
+          </Card.Body>
+        </Card>
+      </>
+      )
+  }
+}
+
 
 class Mortgage extends Component {
   render () {
@@ -40,7 +85,6 @@ class Mortgage extends Component {
               This is an ordinary amortizing mortgage!
             </Card.Text>
           </Card.Body>
-          {/* <Card.Body className = "product-footer"> */}
           <Card.Footer className = "product-footer">
             <Form.Group controlId="formFile" className="mb-3">  
              <Form.Label>Upload transactions:</Form.Label>
@@ -50,10 +94,10 @@ class Mortgage extends Component {
             </Form.Group>
             <Button 
               variant = "primary"
-            >Calculate offer!
+              onClick = {() => {this.props.onGetProduct('mortgage')}}
+            >Get Mortgage!
             </Button>
           </Card.Footer>
-          {/* </Card.Body> */}
         </Card>
       </>
     )
@@ -82,7 +126,8 @@ class Loan extends Component {
             </Form.Group>
             <Button 
               variant = "primary"
-            >Calculate offer!
+              onClick = {() => {this.props.onGetProduct('loan')}}
+            >Get Loan!
             </Button>
           </Card.Footer>
         </Card>

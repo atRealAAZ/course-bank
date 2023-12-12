@@ -30,12 +30,18 @@ const initialTxTable = {
   txs: []
 }
 
+const initialProductDetails = {
+  accepted: false,
+  details: {}
+}
+
 const initialState = {
   route: 'login',
   loginDetails: initialLoginDetails,
   txDetails: initialTxDetails,
   acctDetails: initialAcctDetails,
-  txTable: initialTxTable
+  txTable: initialTxTable,
+  productDetails: initialProductDetails
 }
 
 
@@ -131,6 +137,35 @@ class App extends Component {
     } 
   }
 
+  onGetProduct = async (product) => {
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        product: product,
+        productDetails: this.state.productDetails
+      })
+    }
+    let response = await (
+      await fetch(
+        'http://127.0.0.1:5001/get_product', requestOptions
+      )
+    ).json()
+    let success = response['success']
+    let message = response['message']
+    let result = response['result']
+    if (success) {
+      this.setState({
+        ...this.state,
+        route: 'productOffer',
+        productDetails: result,
+      })
+    }
+  }
+    
+
   render() {
     return (
       <div className = "app">
@@ -153,6 +188,7 @@ class App extends Component {
         ?
           <ProductPage
           onRouteChange = {this.onRouteChange}
+          onGetProduct = {this.onGetProduct}
           />
         : this.state.route === 'login' || this.state.route === 'register' 
         ?

@@ -123,6 +123,16 @@ def add_tx_to_db(
     )
     db.session.commit()
 
+def get_product_offer(product, product_details):
+    #Todo
+    if product == 'loan':
+        return True, gen_result_dict(
+            amount = 1000,
+            interest = 0.05
+        )
+    if product == 'mortgage':
+        return False, None
+
 @app.route('/send_transaction', methods = ['GET', 'POST'])
 def send_transaction():
     message = request.get_json()
@@ -149,4 +159,19 @@ def get_overview_route():
     return gen_result_dict(
         success = True, 
         result = result
+    )
+
+@app.route('/get_product', methods = ['GET', 'POST'])
+def get_product():
+    message = request.get_json()['productDetails']
+    product, product_details = message.values()
+    accepted, details = get_product_offer(product, product_details)
+    message = "Sorry, you are too much of a peasant to get a loan!" if accepted else "Nice bro, that money be coming!"
+    return gen_result_dict(
+        success = True, 
+        result = gen_result_dict(
+            accepted = accepted,
+            details = details
+        ),
+        message = message
     )
